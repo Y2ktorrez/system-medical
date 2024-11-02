@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(request -> request
                         .requestMatchers("/especialidad/**", "/medico/**", "/login/**", "/enfermero/**").permitAll()
-                        .requestMatchers("/paciente/**").hasAnyRole("Administrador", "Medico", "Enfermero")//Aqui van las rutas de los controladores
+                        .requestMatchers("/paciente/**").hasAnyRole("Administrador", "Medico", "Enfermero") //Aqui van las rutas de los controladores
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
