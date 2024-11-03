@@ -72,5 +72,15 @@ public class EntityDtoMapper {
         return fichaDto;
     }
 
+    //HorarioDto
+    public HorarioDto mapHorarioToDtoBasic(Horario horario){
+        HorarioDto horarioDto= new HorarioDto();
+        horarioDto.setId(horario.getId());
+        horarioDto.setDia(horario.getDays().toString());
+        horarioDto.setHoraInicio(horario.getHoraInicio());
+        horarioDto.setHoraFin(horario.getHoraFin());
+        return horarioDto;
+    }
+
 }
 

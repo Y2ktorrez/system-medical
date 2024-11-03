@@ -35,4 +35,7 @@ public class Response {
 
     private FichaDto ficha;
     private List<FichaDto> fichaList;
+
+    private HorarioDto horario;
+    private List<HorarioDto> horarioList;
 }
