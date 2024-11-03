@@ -27,4 +27,7 @@ public class Horario {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Dia days;
+
+    @OneToMany(mappedBy = "horario")
+    private List<HorarioMedico> horarioMedico;
 }

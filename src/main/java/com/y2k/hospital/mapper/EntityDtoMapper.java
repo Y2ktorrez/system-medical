@@ -2,13 +2,18 @@ package com.y2k.hospital.mapper;
 
 import com.y2k.hospital.dto.*;
 import com.y2k.hospital.entity.*;
+import com.y2k.hospital.repository.HorarioMedicoRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Component
 public class EntityDtoMapper {
+    private final HorarioMedicoRepository horarioMedicoRepository;
 
     //EspecialidadDto
     public EspecialidadDto mapEspecialidadToDtoBasic(Especialidad especialidad) {
@@ -81,6 +86,37 @@ public class EntityDtoMapper {
         horarioDto.setHoraFin(horario.getHoraFin());
         return horarioDto;
     }
+
+    //HorarioMedicoDto
+    public HorarioMedicoDto mapHorarioMedicoToDtoBasic(HorarioMedico horarioMedico) {
+        HorarioMedicoDto horarioMedicoDto = new HorarioMedicoDto();
+        horarioMedicoDto.setCi_medico(horarioMedico.getMedico().getCi());
+        horarioMedicoDto.setNombreMedico(horarioMedico.getMedico().getUser().getNombre());
+        horarioMedicoDto.setId(horarioMedico.getId());
+        horarioMedicoDto.setId_horario(horarioMedico.getHorario().getId());
+        horarioMedicoDto.setId_especialidad(horarioMedico.getEspecialidad().getId());
+        horarioMedicoDto.setNombreEspecialidad(horarioMedico.getEspecialidad().getNombre());
+
+        // Obtener todos los horarios del médico correspondiente
+        List<HorarioMedico> horariosMedicos = horarioMedicoRepository.findByMedico_Ci(horarioMedico.getMedico().getCi());
+
+        // Mapear IDs de horarios y objetos Horario a la respuesta DTO
+        List<Long> idHorarios = horariosMedicos.stream()
+                .map(hm -> hm.getHorario().getId())
+                .collect(Collectors.toList());
+
+        // Convertir objetos Horario a HorarioDto
+        List<HorarioDto> horariosDto = horariosMedicos.stream()
+                .map(HorarioMedico::getHorario) // Obtener la lista de horarios
+                .map(this::mapHorarioToDtoBasic) // Convertir cada horario a HorarioDto
+                .collect(Collectors.toList());
+
+        // Asignar a DTO
+        horarioMedicoDto.setId_horarios(idHorarios);
+        horarioMedicoDto.setHorarios(horariosDto); // Cambia a usar la lista de HorarioDto
+        return horarioMedicoDto;
+    }
+
 
 }
 

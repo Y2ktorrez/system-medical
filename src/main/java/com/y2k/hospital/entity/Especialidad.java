@@ -24,4 +24,7 @@ public class Especialidad {
 
     @OneToMany(mappedBy = "especialidad")
     private List<Ficha> fichas;
+
+    @OneToMany(mappedBy = "especialidad")
+    private List<HorarioMedico> horarioMedico;
 }
