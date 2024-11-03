@@ -32,4 +32,7 @@ public class Response {
 
     private PacienteDto paciente;
     private List<PacienteDto> pacienteList;
+
+    private FichaDto ficha;
+    private List<FichaDto> fichaList;
 }

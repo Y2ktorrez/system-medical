@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +24,7 @@ public class Paciente {
     @OneToOne
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User user;
+
+    @OneToMany(mappedBy = "paciente")
+    private List<Ficha> fichas;
 }

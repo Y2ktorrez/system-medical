@@ -1,13 +1,7 @@
 package com.y2k.hospital.mapper;
 
-import com.y2k.hospital.dto.EnfermeroDto;
-import com.y2k.hospital.dto.EspecialidadDto;
-import com.y2k.hospital.dto.MedicoDto;
-import com.y2k.hospital.dto.PacienteDto;
-import com.y2k.hospital.entity.Enfermero;
-import com.y2k.hospital.entity.Especialidad;
-import com.y2k.hospital.entity.Medico;
-import com.y2k.hospital.entity.Paciente;
+import com.y2k.hospital.dto.*;
+import com.y2k.hospital.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -60,6 +54,22 @@ public class EntityDtoMapper {
         pacienteDto.setEmail(paciente.getUser().getEmail());
         pacienteDto.setBirthDate(paciente.getFechaNacimiento());
         return pacienteDto;
+    }
+
+    //FichaDto
+    public FichaDto mapFichaToDtoBasic(Ficha ficha){
+        FichaDto fichaDto= new FichaDto();
+        fichaDto.setId(ficha.getId());
+        fichaDto.setFechaEmision(ficha.getFechaEmision());
+        fichaDto.setFechaAtencion(ficha.getFechaAtencion());
+        fichaDto.setHoraAtencion(ficha.getHoraAtencion());
+        fichaDto.setCi_medico(ficha.getMedico().getCi());
+        fichaDto.setCi_paciente(ficha.getPaciente().getCi());
+        fichaDto.setId_especialidad(ficha.getEspecialidad().getId());
+        fichaDto.setNombreEspecialidad(ficha.getEspecialidad().getNombre());
+        fichaDto.setNombreMedico(ficha.getMedico().getUser().getNombre());
+        fichaDto.setNombrePaciente(ficha.getPaciente().getUser().getNombre());
+        return fichaDto;
     }
 
 }

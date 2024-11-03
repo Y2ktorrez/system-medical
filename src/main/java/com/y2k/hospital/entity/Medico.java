@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -34,4 +35,7 @@ public class Medico {
 
     )
     private Set<Especialidad> especialidades;
+
+    @OneToMany(mappedBy = "medico")
+    private List<Ficha> fichas;
 }
