@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +76,7 @@ public class FichaImpl implements FichaService {
     public Response getAllFichas(){
         List<FichaDto> fichas = fichaRepository.findAll().stream()
                 .map(entityDtoMapper::mapFichaToDtoBasic)
-                .collect(Collectors.toList());
+                .toList();
 
         return Response.builder()
                 .status(200)

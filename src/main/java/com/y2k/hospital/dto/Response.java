@@ -41,4 +41,7 @@ public class Response {
 
     private HorarioMedicoDto horarioMedico;
     private List<HorarioMedicoDto> horarioMedicoList;
+
+    private PreconsultaDto preconsulta;
+    private List<PreconsultaDto> preconsultaList;
 }

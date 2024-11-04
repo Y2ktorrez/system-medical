@@ -6,7 +6,6 @@ import com.y2k.hospital.repository.HorarioMedicoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,6 +116,23 @@ public class EntityDtoMapper {
         return horarioMedicoDto;
     }
 
+    //PreconsultaDto
+    public PreconsultaDto mapPreconsultaToDtoBasic(Preconsulta preconsulta){
+        PreconsultaDto preconsultaDto=new PreconsultaDto();
+        preconsultaDto.setId(preconsulta.getId());
+        preconsultaDto.setEdad(preconsulta.getEdad());
+        preconsultaDto.setEstado(preconsulta.getEstado());
+        preconsultaDto.setPeso(preconsulta.getPeso());
+        preconsultaDto.setAltura(preconsulta.getAltura());
+        preconsultaDto.setSexo(preconsulta.getSexo());
+        preconsultaDto.setPresion(preconsulta.getPresion());
+        preconsultaDto.setEnfermero(mapEnfermeroToDtoBasic(preconsulta.getEnfermero()));
+        preconsultaDto.setNombreEnfermero(preconsulta.getEnfermero().getUser().getNombre());
+        preconsultaDto.setFicha(mapFichaToDtoBasic(preconsulta.getFicha()));
+        preconsultaDto.setCi_enferemero(preconsulta.getEnfermero().getCi());
+        preconsultaDto.setId_Ficha(preconsulta.getFicha().getId());
 
+        return preconsultaDto;
+    }
 }
 

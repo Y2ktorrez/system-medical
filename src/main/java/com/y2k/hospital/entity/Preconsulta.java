@@ -19,7 +19,7 @@ public class Preconsulta {
     private Long id;
 
     private String estado;
-    private Integer paso;
+    private Integer peso;
     private Integer altura;
     private Integer edad;
     private String sexo;
