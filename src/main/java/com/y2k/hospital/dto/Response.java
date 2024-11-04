@@ -44,4 +44,7 @@ public class Response {
 
     private PreconsultaDto preconsulta;
     private List<PreconsultaDto> preconsultaList;
+
+    private ConsultaDto consulta;
+    private List<ConsultaDto> consultaList;
 }

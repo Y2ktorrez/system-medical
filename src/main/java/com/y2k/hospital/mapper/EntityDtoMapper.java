@@ -134,5 +134,17 @@ public class EntityDtoMapper {
 
         return preconsultaDto;
     }
+
+    //ConsultaDto
+    public ConsultaDto mapConsultaToDtoBasic(Consulta consulta){
+        ConsultaDto consultaDto=new ConsultaDto();
+        consultaDto.setId(consulta.getId());
+        consultaDto.setFecha(consulta.getFecha());
+        consultaDto.setDiagnostico(consulta.getDiagnostico());
+        consultaDto.setId_preconsulta(consulta.getPreconsulta().getId());
+        consultaDto.setPreconsultaDto(mapPreconsultaToDtoBasic(consulta.getPreconsulta()));
+
+        return consultaDto;
+    }
 }
 
