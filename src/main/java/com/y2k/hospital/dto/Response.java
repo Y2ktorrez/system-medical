@@ -50,4 +50,7 @@ public class Response {
 
     private TipoAnalisisDto tipoAnalisis;
     private List<TipoAnalisisDto> tipoAnalisisList;
+
+    private TipoExamenDto tipoExamen;
+    private List<TipoExamenDto> tipoExamenList;
 }

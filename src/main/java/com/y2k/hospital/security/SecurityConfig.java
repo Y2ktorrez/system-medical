@@ -28,7 +28,7 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(request -> request
-                        .requestMatchers("/especialidad/**", "/medico/**", "/login/**", "/enfermero/**","/ficha/**","/horario/**","/horario_medico/**","/preconsulta/**","/consulta/**","/tipo_analisis/**").permitAll()
+                        .requestMatchers("/especialidad/**", "/medico/**", "/login/**", "/enfermero/**","/ficha/**","/horario/**","/horario_medico/**","/preconsulta/**","/consulta/**","/tipo_analisis/**","/tipo_examen/**").permitAll()
                         .requestMatchers("/paciente/**").hasAnyRole("Administrador", "Medico", "Enfermero") //Aqui van las rutas de los controladores
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
