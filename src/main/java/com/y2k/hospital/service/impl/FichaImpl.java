@@ -12,7 +12,9 @@ import com.y2k.hospital.repository.EspecialidadRepository;
 import com.y2k.hospital.repository.FichaRepository;
 import com.y2k.hospital.repository.MedicoRepository;
 import com.y2k.hospital.repository.PacienteRepository;
+import com.y2k.hospital.service.aditionals.EmailService;
 import com.y2k.hospital.service.interf.FichaService;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,10 @@ public class FichaImpl implements FichaService {
     private final MedicoRepository medicoRepository;
     private final PacienteRepository pacienteRepository;
     private final EspecialidadRepository especialidadRepository;
+    private final EmailService emailService;
 
     @Override
-    public Response createFicha(FichaDto fichaDto){
+    public Response createFicha(FichaDto fichaDto) {
         Medico medico = medicoRepository.findById(fichaDto.getCi_medico())
                 .orElseThrow(() -> new NotFountException("Medico no encontrado con CI: " + fichaDto.getCi_medico()));
 
@@ -38,7 +41,7 @@ public class FichaImpl implements FichaService {
         Especialidad especialidad = especialidadRepository.findById(fichaDto.getId_especialidad())
                 .orElseThrow(() -> new NotFountException("Especialidad no encontrada con ID: " + fichaDto.getId_especialidad()));
 
-        Ficha ficha=Ficha.builder()
+        Ficha ficha = Ficha.builder()
                 .fechaAtencion(fichaDto.getFechaAtencion())
                 .fechaEmision(fichaDto.getFechaEmision())
                 .horaAtencion(fichaDto.getHoraAtencion())
@@ -47,9 +50,27 @@ public class FichaImpl implements FichaService {
                 .especialidad(especialidad)
                 .build();
 
-        Ficha fichaGuardada= fichaRepository.save(ficha);
-
+        Ficha fichaGuardada = fichaRepository.save(ficha);
         FichaDto responseDto = entityDtoMapper.mapFichaToDtoBasic(fichaGuardada);
+
+        String emailContent = "Estimado " + paciente.getUser().getNombre() + ",<br><br>" +
+                "Su ficha ha sido creada con éxito. Aquí están los detalles:<br><br>" +
+                "<ul>" +
+                "<li><strong>Fecha de Atención:</strong> " + ficha.getFechaAtencion() + "</li>" +
+                "<li><strong>Hora de Atención:</strong> " + ficha.getHoraAtencion() + "</li>" +
+                "<li><strong>Especialidad:</strong> " + especialidad.getNombre() + "</li>" +
+                "</ul><br>" +
+                "Gracias por confiar en nuestro servicio.";
+
+        try {
+            emailService.sendFichaCreatedEmail(
+                    paciente.getUser().getEmail(),
+                    "Ficha Creada Exitosamente",
+                    emailContent
+            );
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error al enviar correo de confirmación al paciente.", e);
+        }
 
         return Response.builder()
                 .status(200)
@@ -57,7 +78,6 @@ public class FichaImpl implements FichaService {
                 .ficha(responseDto)
                 .build();
     }
-
     @Override
     public Response getFichaById(Long id){
         Ficha ficha = fichaRepository.findById(id)
