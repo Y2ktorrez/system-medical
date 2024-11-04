@@ -188,5 +188,18 @@ public class EntityDtoMapper {
 
         return tipoPagoDto;
     }
+
+    //InsumoMedico
+    public InsumoMedicoDto mapInsumoMedicoToDtoBasic(InsumoMedico insumoMedico){
+        InsumoMedicoDto insumoMedicoDto=new InsumoMedicoDto();
+        insumoMedicoDto.setId(insumoMedico.getId());
+        insumoMedicoDto.setNombre(insumoMedico.getNombre());
+        insumoMedicoDto.setDescripcion(insumoMedico.getDescripcion());
+        insumoMedicoDto.setCosto(insumoMedico.getCosto());
+        insumoMedicoDto.setId_tipoInsumo(insumoMedico.getId());
+        insumoMedicoDto.setTipoInsumo(mapTipoInsumoToDtoBasic(insumoMedico.getTipoInsumo()));
+
+        return insumoMedicoDto;
+    }
 }
 

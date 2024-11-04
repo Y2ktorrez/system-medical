@@ -59,4 +59,7 @@ public class Response {
 
     private TipoPagoDto tipoPago;
     private List<TipoPagoDto> tipoPagoList;
+
+    private InsumoMedicoDto insumoMedico;
+    private List<InsumoMedicoDto> insumoMedicoList;
 }
