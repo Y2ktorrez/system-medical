@@ -56,4 +56,7 @@ public class Response {
 
     private TipoInsumoDto tipoInsumo;
     private List<TipoInsumoDto> tipoInsumoList;
+
+    private TipoPagoDto tipoPago;
+    private List<TipoPagoDto> tipoPagoList;
 }

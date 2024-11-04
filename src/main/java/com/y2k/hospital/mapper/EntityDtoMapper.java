@@ -178,5 +178,15 @@ public class EntityDtoMapper {
 
         return tipoInsumoDto;
     }
+
+    //TipoPago
+    public TipoPagoDto mapTipoPagoToDtoBasic(TipoPago tipoPago){
+        TipoPagoDto tipoPagoDto=new TipoPagoDto();
+        tipoPagoDto.setId(tipoPago.getId());
+        tipoPagoDto.setNombre(tipoPago.getNombre());
+        tipoPagoDto.setDescripcion(tipoPago.getDescripcion());
+
+        return tipoPagoDto;
+    }
 }
 
