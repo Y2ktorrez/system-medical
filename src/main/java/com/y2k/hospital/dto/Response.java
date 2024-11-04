@@ -53,4 +53,7 @@ public class Response {
 
     private TipoExamenDto tipoExamen;
     private List<TipoExamenDto> tipoExamenList;
+
+    private TipoInsumoDto tipoInsumo;
+    private List<TipoInsumoDto> tipoInsumoList;
 }

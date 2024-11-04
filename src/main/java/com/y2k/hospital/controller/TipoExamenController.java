@@ -1,9 +1,7 @@
 package com.y2k.hospital.controller;
 
 import com.y2k.hospital.dto.Response;
-import com.y2k.hospital.dto.TipoAnalisisDto;
 import com.y2k.hospital.dto.TipoExamenDto;
-import com.y2k.hospital.service.interf.TipoAnalisisService;
 import com.y2k.hospital.service.interf.TipoExamenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
