@@ -47,4 +47,7 @@ public class Response {
 
     private ConsultaDto consulta;
     private List<ConsultaDto> consultaList;
+
+    private TipoAnalisisDto tipoAnalisis;
+    private List<TipoAnalisisDto> tipoAnalisisList;
 }

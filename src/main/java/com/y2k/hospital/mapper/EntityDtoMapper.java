@@ -135,7 +135,7 @@ public class EntityDtoMapper {
         return preconsultaDto;
     }
 
-    //ConsultaDto
+    //ConsultaDto Todo: Hay que modificarlo despues de crear las demas tablas!!!
     public ConsultaDto mapConsultaToDtoBasic(Consulta consulta){
         ConsultaDto consultaDto=new ConsultaDto();
         consultaDto.setId(consulta.getId());
@@ -145,6 +145,17 @@ public class EntityDtoMapper {
         consultaDto.setPreconsultaDto(mapPreconsultaToDtoBasic(consulta.getPreconsulta()));
 
         return consultaDto;
+    }
+
+    //TipoAnalisis
+    public TipoAnalisisDto mapTipoAnalisisToDtoBasic(TipoAnalisis tipoAnalisis){
+        TipoAnalisisDto tipoAnalisisDto=new TipoAnalisisDto();
+        tipoAnalisisDto.setCosto(tipoAnalisis.getCosto());
+        tipoAnalisisDto.setId(tipoAnalisis.getId());
+        tipoAnalisisDto.setNombre(tipoAnalisis.getNombre());
+        tipoAnalisisDto.setDescripcion(tipoAnalisis.getDescripcion());
+
+        return tipoAnalisisDto;
     }
 }
 

@@ -71,7 +71,7 @@ public class HorarioImpl implements HorarioService {
     public Response getAllHorarios(){
         List<HorarioDto> horarios = horarioRepository.findAll().stream()
                 .map(entityDtoMapper::mapHorarioToDtoBasic)
-                .collect(Collectors.toList());
+                .toList();
 
         return Response.builder()
                 .status(200)
