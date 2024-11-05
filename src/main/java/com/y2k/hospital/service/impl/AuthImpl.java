@@ -5,23 +5,26 @@ import com.y2k.hospital.dto.Response;
 import com.y2k.hospital.entity.User;
 import com.y2k.hospital.exception.InvalidCredentialsException;
 import com.y2k.hospital.exception.NotFountException;
-import com.y2k.hospital.mapper.EntityDtoMapper;
-import com.y2k.hospital.repository.MedicoRepository;
 import com.y2k.hospital.repository.UserRepository;
 import com.y2k.hospital.security.JwtUtils;
+import com.y2k.hospital.security.TokenBlackList;
 import com.y2k.hospital.service.interf.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthImpl implements AuthService {
 
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final TokenBlackList tokenBlackList;
 
     @Override
     public Response loginMedico(LoginDto loginRequest) {
@@ -92,5 +95,23 @@ public class AuthImpl implements AuthService {
                 .expirationTime("6 Month")
                 .build();
     }
+
+    @Override
+    public void logout(HttpServletRequest request) {
+        String token = getTokenFromRequest(request);
+        if (token != null) {
+            tokenBlackList.addToken(token);
+            log.info("Token {} has been added to blacklist", token);
+        }
+    }
+
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
+            return token.substring(7);
+        }
+        return null;
+    }
+
 
 }

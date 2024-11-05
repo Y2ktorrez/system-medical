@@ -23,14 +23,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
     private final CustomUserDetailsService customUserDetailsService;
+    private final TokenBlackList tokenBlacklist;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+
         String token = getTokenFromRequest(request);
 
-        if (token != null) {
+        if (token != null && !tokenBlacklist.isTokenBlocked(token)) {
             String username = jwtUtils.getUserNameFromToken(token);
-
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
             if (StringUtils.hasText(username) && jwtUtils.isTokenValid(token, userDetails)) {
@@ -43,18 +45,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-
         }
         filterChain.doFilter(request, response);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        if (StringUtils.hasText(token) && StringUtils.startsWithIgnoreCase(token, "Bearer ")) {
+        if (StringUtils.hasText(token) && token.startsWith("Bearer ")) {
             return token.substring(7);
         }
         return null;
     }
-
 }
 

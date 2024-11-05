@@ -3,6 +3,7 @@ package com.y2k.hospital.controller;
 import com.y2k.hospital.dto.LoginDto;
 import com.y2k.hospital.dto.Response;
 import com.y2k.hospital.service.interf.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,12 @@ public class AuthController {
     public ResponseEntity<Response> loginPaciente(@RequestBody LoginDto loginRequest) {
         Response response = authService.loginPaciente(loginRequest);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        authService.logout(request);
+        return ResponseEntity.ok("Logout successful");
     }
 
 }
