@@ -12,7 +12,7 @@ import com.y2k.hospital.repository.EspecialidadRepository;
 import com.y2k.hospital.repository.FichaRepository;
 import com.y2k.hospital.repository.MedicoRepository;
 import com.y2k.hospital.repository.PacienteRepository;
-import com.y2k.hospital.service.aditionals.EmailService;
+import com.y2k.hospital.service.additional.EmailService;
 import com.y2k.hospital.service.interf.FichaService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.y2k.hospital.service.aditionals;
+package com.y2k.hospital.service.additional;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

@@ -21,6 +21,7 @@ public class Bitacora {
     private Long id;
     private String accion;
     private LocalDate fecha;
+    private String ip;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario", referencedColumnName = "id")
