@@ -19,4 +19,16 @@ public class ConsultaDto {
     private String diagnostico;
     private Long id_preconsulta;
     private PreconsultaDto preconsultaDto;
+
+    private TipoExamenDto tipoExamen;
+    private ExamenDto examen;
+    private Long id_examen;
+    private String resultadoExamen;
+    private LocalDate fechaExamen;
+
+    private TipoAnalisisDto tipoAnalisis;
+    private AnalisisDto analisis;
+    private Long id_analisis;
+    private String resultadoAnalisis;
+    private LocalDate fechaAnalisis;
 }

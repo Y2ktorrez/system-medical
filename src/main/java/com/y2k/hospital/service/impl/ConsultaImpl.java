@@ -2,12 +2,10 @@ package com.y2k.hospital.service.impl;
 
 import com.y2k.hospital.dto.ConsultaDto;
 import com.y2k.hospital.dto.Response;
-import com.y2k.hospital.entity.Consulta;
-import com.y2k.hospital.entity.Preconsulta;
+import com.y2k.hospital.entity.*;
 import com.y2k.hospital.exception.NotFountException;
 import com.y2k.hospital.mapper.EntityDtoMapper;
-import com.y2k.hospital.repository.ConsultaRepository;
-import com.y2k.hospital.repository.PreconsultaRepository;
+import com.y2k.hospital.repository.*;
 import com.y2k.hospital.service.interf.ConsultaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,11 +18,19 @@ public class ConsultaImpl implements ConsultaService {
     private final ConsultaRepository consultaRepository;
     private final EntityDtoMapper entityDtoMapper;
     private final PreconsultaRepository preconsultaRepository;
+    private final TipoExamenRepository tipoExamenRepository;
+    private final TipoAnalisisRepository tipoAnalisisRepository;
 
     @Override
     public Response createConsulta(ConsultaDto consultaDto){
         Preconsulta preconsulta=preconsultaRepository.findById(consultaDto.getId_preconsulta())
                 .orElseThrow(()-> new NotFountException("Medico no encontrado con CI: " + consultaDto.getId_preconsulta()));
+
+        TipoAnalisis tipoAnalisis=tipoAnalisisRepository.findById(consultaDto.getId_analisis())
+                .orElseThrow(()-> new NotFountException("tipo analisis no encontrado con ID: " + consultaDto.getId_analisis()));
+
+        TipoExamen tipoExamen=tipoExamenRepository.findById(consultaDto.getId_examen())
+                .orElseThrow(()-> new NotFountException("tipo examen no encontrado con ID: " + consultaDto.getId_examen()));
 
         Consulta consulta=Consulta.builder()
                 .fecha(consultaDto.getFecha())
@@ -33,6 +39,20 @@ public class ConsultaImpl implements ConsultaService {
                 .build();
 
         Consulta consultaGuardada=consultaRepository.save(consulta);
+
+        Analisis analisis=Analisis.builder()
+                .resultado(consultaDto.getResultadoAnalisis())
+                .tipoAnalisis(tipoAnalisis)
+                .consulta(consulta)
+                .fecha(consultaDto.getFechaAnalisis())
+                .build();
+
+        Examen examen=Examen.builder()
+                .resultado(consultaDto.getResultadoAnalisis())
+                .tipoExamen(tipoExamen)
+                .consulta(consulta)
+                .fecha(consultaDto.getFechaAnalisis())
+                .build();
 
         ConsultaDto response=entityDtoMapper.mapConsultaToDtoBasic(consultaGuardada);
 

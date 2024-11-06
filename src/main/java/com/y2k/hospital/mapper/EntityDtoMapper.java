@@ -136,13 +136,25 @@ public class EntityDtoMapper {
     }
 
     //ConsultaDto Todo: Hay que modificarlo despues de crear las demas tablas!!!
-    public ConsultaDto mapConsultaToDtoBasic(Consulta consulta){
+    public ConsultaDto mapConsultaToDtoBasic(Consulta consulta, Examen examen, Analisis analisis){
         ConsultaDto consultaDto=new ConsultaDto();
         consultaDto.setId(consulta.getId());
         consultaDto.setFecha(consulta.getFecha());
         consultaDto.setDiagnostico(consulta.getDiagnostico());
         consultaDto.setId_preconsulta(consulta.getPreconsulta().getId());
         consultaDto.setPreconsultaDto(mapPreconsultaToDtoBasic(consulta.getPreconsulta()));
+
+        consultaDto.setTipoAnalisis(mapTipoAnalisisToDtoBasic(analisis.getTipoAnalisis()));
+        consultaDto.setAnalisis(mapAnalisisToDtoBasic(analisis));
+        consultaDto.setId_analisis(analisis.getId());
+        consultaDto.setResultadoAnalisis(analisis.getResultado());
+        consultaDto.setFechaAnalisis(analisis.getFecha());
+
+        consultaDto.setTipoExamen(mapTipoExamenToDtoBasic(examen.getTipoExamen()));
+        consultaDto.setExamen(mapExamenToDtoBasic(examen));
+        consultaDto.setId_examen(examen.getId());
+        consultaDto.setResultadoExamen(examen.getResultado());
+        consultaDto.setFechaExamen(examen.getFecha());
 
         return consultaDto;
     }
@@ -200,6 +212,26 @@ public class EntityDtoMapper {
         insumoMedicoDto.setTipoInsumo(mapTipoInsumoToDtoBasic(insumoMedico.getTipoInsumo()));
 
         return insumoMedicoDto;
+    }
+
+    //Analisis
+    public AnalisisDto mapAnalisisToDtoBasic(Analisis analisis){
+        AnalisisDto analisisDto= new AnalisisDto();
+        analisisDto.setId(analisis.getId());
+        analisisDto.setResultado(analisis.getResultado());
+        analisisDto.setFecha(analisis.getFecha());
+
+        return analisisDto;
+    }
+
+    //Examen
+    public ExamenDto mapExamenToDtoBasic(Examen examen){
+        ExamenDto examenDto= new ExamenDto();
+        examenDto.setId(examen.getId());
+        examenDto.setResultado(examen.getResultado());
+        examenDto.setFecha(examen.getFecha());
+
+        return examenDto;
     }
 }
 
