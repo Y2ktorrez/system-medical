@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,15 +21,7 @@ public class ConsultaDto {
     private Long id_preconsulta;
     private PreconsultaDto preconsultaDto;
 
-    private TipoExamenDto tipoExamen;
-    private ExamenDto examen;
-    private Long id_examen;
-    private String resultadoExamen;
-    private LocalDate fechaExamen;
+    private List<ExamenDto> examen;
 
-    private TipoAnalisisDto tipoAnalisis;
-    private AnalisisDto analisis;
-    private Long id_analisis;
-    private String resultadoAnalisis;
-    private LocalDate fechaAnalisis;
+    private List<AnalisisDto> analisis;
 }

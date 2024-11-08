@@ -18,4 +18,7 @@ public class ExamenDto {
 
     private String resultado;
     private LocalDate fecha;
+
+    private Long id_tipoExamen;
+    private TipoExamenDto examen;
 }

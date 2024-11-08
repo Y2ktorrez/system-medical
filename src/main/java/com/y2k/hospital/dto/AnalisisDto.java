@@ -18,4 +18,7 @@ public class AnalisisDto {
 
     private String resultado;
     private LocalDate fecha;
+
+    private Long id_tipoAnalisis;
+    private TipoAnalisisDto analisis;
 }

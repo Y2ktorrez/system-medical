@@ -1,6 +1,8 @@
 package com.y2k.hospital.service.impl;
 
+import com.y2k.hospital.dto.AnalisisDto;
 import com.y2k.hospital.dto.ConsultaDto;
+import com.y2k.hospital.dto.ExamenDto;
 import com.y2k.hospital.dto.Response;
 import com.y2k.hospital.entity.*;
 import com.y2k.hospital.exception.NotFountException;
@@ -10,6 +12,7 @@ import com.y2k.hospital.service.interf.ConsultaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,41 +23,65 @@ public class ConsultaImpl implements ConsultaService {
     private final PreconsultaRepository preconsultaRepository;
     private final TipoExamenRepository tipoExamenRepository;
     private final TipoAnalisisRepository tipoAnalisisRepository;
+    private final AnalisisRepository analisisRepository;
+    private final ExamenRepository examenRepository;
 
     @Override
-    public Response createConsulta(ConsultaDto consultaDto){
-        Preconsulta preconsulta=preconsultaRepository.findById(consultaDto.getId_preconsulta())
-                .orElseThrow(()-> new NotFountException("Medico no encontrado con CI: " + consultaDto.getId_preconsulta()));
+    public Response createConsulta(ConsultaDto consultaDto) {
+        Preconsulta preconsulta = preconsultaRepository.findById(consultaDto.getId_preconsulta())
+                .orElseThrow(() -> new NotFountException("Medico no encontrado con CI: " + consultaDto.getId_preconsulta()));
 
-        TipoAnalisis tipoAnalisis=tipoAnalisisRepository.findById(consultaDto.getId_analisis())
-                .orElseThrow(()-> new NotFountException("tipo analisis no encontrado con ID: " + consultaDto.getId_analisis()));
-
-        TipoExamen tipoExamen=tipoExamenRepository.findById(consultaDto.getId_examen())
-                .orElseThrow(()-> new NotFountException("tipo examen no encontrado con ID: " + consultaDto.getId_examen()));
-
-        Consulta consulta=Consulta.builder()
+        Consulta consulta = Consulta.builder()
                 .fecha(consultaDto.getFecha())
                 .diagnostico(consultaDto.getDiagnostico())
                 .preconsulta(preconsulta)
                 .build();
 
-        Consulta consultaGuardada=consultaRepository.save(consulta);
+        Consulta consultaGuardada = consultaRepository.save(consulta);
 
-        Analisis analisis=Analisis.builder()
-                .resultado(consultaDto.getResultadoAnalisis())
-                .tipoAnalisis(tipoAnalisis)
-                .consulta(consulta)
-                .fecha(consultaDto.getFechaAnalisis())
-                .build();
+        List<Analisis> listaAnalisis = new ArrayList<>();
+        List<Examen> listaExamenes = new ArrayList<>();
 
-        Examen examen=Examen.builder()
-                .resultado(consultaDto.getResultadoAnalisis())
-                .tipoExamen(tipoExamen)
-                .consulta(consulta)
-                .fecha(consultaDto.getFechaAnalisis())
-                .build();
+        if (consultaDto.getAnalisis() != null) {
+            for (AnalisisDto analisisDto : consultaDto.getAnalisis()) {
+                TipoAnalisis tipoAnalisis = tipoAnalisisRepository.findById(analisisDto.getId_tipoAnalisis())
+                        .orElseThrow(() -> new NotFountException("Tipo de análisis no encontrado con ID: " + analisisDto.getId_tipoAnalisis()));
 
-        ConsultaDto response=entityDtoMapper.mapConsultaToDtoBasic(consultaGuardada);
+                Analisis analisis = Analisis.builder()
+                        .resultado(analisisDto.getResultado())
+                        .tipoAnalisis(tipoAnalisis)
+                        .consulta(consultaGuardada)
+                        .fecha(analisisDto.getFecha())
+                        .build();
+
+                listaAnalisis.add(analisis);
+            }
+        }
+
+        if (consultaDto.getExamen() != null) {
+            for (ExamenDto examenDto : consultaDto.getExamen()) {
+                TipoExamen tipoExamen = tipoExamenRepository.findById(examenDto.getId_tipoExamen())
+                        .orElseThrow(() -> new NotFountException("Tipo de examen no encontrado con ID: " + examenDto.getId_tipoExamen()));
+
+                Examen examen = Examen.builder()
+                        .resultado(examenDto.getResultado())
+                        .tipoExamen(tipoExamen)
+                        .consulta(consultaGuardada)
+                        .fecha(examenDto.getFecha())
+                        .build();
+
+                listaExamenes.add(examen);
+            }
+        }
+
+        if (!listaAnalisis.isEmpty()) {
+            analisisRepository.saveAll(listaAnalisis);
+        }
+        if (!listaExamenes.isEmpty()) {
+            examenRepository.saveAll(listaExamenes);
+        }
+
+        ConsultaDto response = entityDtoMapper.mapConsultaToDtoBasic(consultaGuardada,listaExamenes,listaAnalisis);
 
         return Response.builder()
                 .status(200)
@@ -63,12 +90,17 @@ public class ConsultaImpl implements ConsultaService {
                 .build();
     }
 
+
     @Override
     public Response getConsultaById(Long id){
         Consulta consulta = consultaRepository.findById(id)
                 .orElseThrow(()-> new NotFountException("Consulta no encontrada con id: " + id));
 
-        ConsultaDto consultaDto=entityDtoMapper.mapConsultaToDtoBasic(consulta);
+        List<Examen> examenes = examenRepository.findAllByConsultaId(id);
+
+        List<Analisis> analisis = analisisRepository.findAllByConsultaId(id);
+
+        ConsultaDto consultaDto=entityDtoMapper.mapConsultaToDtoBasic(consulta,examenes,analisis);
 
         return Response.builder()
                 .status(200)
@@ -80,7 +112,12 @@ public class ConsultaImpl implements ConsultaService {
     @Override
     public Response getAllConsultas(){
         List<ConsultaDto> consultas = consultaRepository.findAll().stream()
-                .map(entityDtoMapper::mapConsultaToDtoBasic)
+                .map(consulta -> {
+                    List<Examen> examenes = examenRepository.findAllByConsultaId(consulta.getId());
+                    List<Analisis> analisis = analisisRepository.findAllByConsultaId(consulta.getId());
+
+                    return entityDtoMapper.mapConsultaToDtoBasic(consulta, examenes, analisis);
+                })
                 .toList();
 
         return Response.builder()
@@ -103,7 +140,11 @@ public class ConsultaImpl implements ConsultaService {
 
         Consulta consultaActualizada = consultaRepository.save(consulta);
 
-        ConsultaDto response= entityDtoMapper.mapConsultaToDtoBasic(consultaActualizada);
+        List<Examen> examenes = examenRepository.findAllByConsultaId(id);
+
+        List<Analisis> analisis = analisisRepository.findAllByConsultaId(id);
+
+        ConsultaDto response= entityDtoMapper.mapConsultaToDtoBasic(consultaActualizada,examenes,analisis);
 
         return Response.builder()
                 .status(200)

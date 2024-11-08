@@ -136,7 +136,7 @@ public class EntityDtoMapper {
     }
 
     //ConsultaDto Todo: Hay que modificarlo despues de crear las demas tablas!!!
-    public ConsultaDto mapConsultaToDtoBasic(Consulta consulta, Examen examen, Analisis analisis){
+    public ConsultaDto mapConsultaToDtoBasic(Consulta consulta, List<Examen> examen, List<Analisis> analisis){
         ConsultaDto consultaDto=new ConsultaDto();
         consultaDto.setId(consulta.getId());
         consultaDto.setFecha(consulta.getFecha());
@@ -144,17 +144,9 @@ public class EntityDtoMapper {
         consultaDto.setId_preconsulta(consulta.getPreconsulta().getId());
         consultaDto.setPreconsultaDto(mapPreconsultaToDtoBasic(consulta.getPreconsulta()));
 
-        consultaDto.setTipoAnalisis(mapTipoAnalisisToDtoBasic(analisis.getTipoAnalisis()));
-        consultaDto.setAnalisis(mapAnalisisToDtoBasic(analisis));
-        consultaDto.setId_analisis(analisis.getId());
-        consultaDto.setResultadoAnalisis(analisis.getResultado());
-        consultaDto.setFechaAnalisis(analisis.getFecha());
+        consultaDto.setAnalisis(mapListAnalisisToDtoBasic(analisis));
 
-        consultaDto.setTipoExamen(mapTipoExamenToDtoBasic(examen.getTipoExamen()));
-        consultaDto.setExamen(mapExamenToDtoBasic(examen));
-        consultaDto.setId_examen(examen.getId());
-        consultaDto.setResultadoExamen(examen.getResultado());
-        consultaDto.setFechaExamen(examen.getFecha());
+        consultaDto.setExamen(mapListExamenToDtoBasic(examen));
 
         return consultaDto;
     }
@@ -220,6 +212,7 @@ public class EntityDtoMapper {
         analisisDto.setId(analisis.getId());
         analisisDto.setResultado(analisis.getResultado());
         analisisDto.setFecha(analisis.getFecha());
+        analisisDto.setAnalisis(mapTipoAnalisisToDtoBasic(analisis.getTipoAnalisis()));
 
         return analisisDto;
     }
@@ -230,8 +223,23 @@ public class EntityDtoMapper {
         examenDto.setId(examen.getId());
         examenDto.setResultado(examen.getResultado());
         examenDto.setFecha(examen.getFecha());
+        examenDto.setExamen(mapTipoExamenToDtoBasic(examen.getTipoExamen()));
 
         return examenDto;
+    }
+
+    //ListAnalisis
+    public List<AnalisisDto> mapListAnalisisToDtoBasic (List<Analisis> analisis){
+        return analisis.stream()
+                .map(this::mapAnalisisToDtoBasic)
+                .toList();
+    }
+
+    //ListExamen
+    public List<ExamenDto> mapListExamenToDtoBasic (List<Examen> examen){
+        return examen.stream()
+                .map(this::mapExamenToDtoBasic)
+                .toList();
     }
 }
 
