@@ -50,13 +50,15 @@ public class JwtUtils {
 
     public String generateToken(User user) {
         String username = user.getEmail();
-
+        String nombre = user.getNombre();
         Long ci = getCiFromUser(user);
 
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", user.getRoles().stream().map(role -> "ROLE_" + role.getName().name()).collect(Collectors.toList())) // Incluye roles con prefijo
                 .claim("ci", ci)
+                .claim("nombre", nombre)
+                .claim("email", username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MILLISEC))
                 .signWith(key)
