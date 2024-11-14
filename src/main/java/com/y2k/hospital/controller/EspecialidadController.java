@@ -22,8 +22,8 @@ public class EspecialidadController {
     public ResponseEntity<Response> createEspecialidad(@RequestBody EspecialidadDto especialidadDto) {
         Response response = especialidadService.createEspecialidad(especialidadDto);
 
-        User usuarioActual = bitacoraService.obtenerUsuarioActual();
-        bitacoraService.registrarAccion("Creo una Especialidad", usuarioActual);
+        //User usuarioActual = bitacoraService.obtenerUsuarioActual();
+        //bitacoraService.registrarAccion("Creo una Especialidad", usuarioActual);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -32,8 +32,8 @@ public class EspecialidadController {
     public ResponseEntity<Response> getEspecialidadById(@PathVariable Long id) {
         Response response = especialidadService.getEspecialidadById(id);
 
-        User usuarioActual = bitacoraService.obtenerUsuarioActual();
-        bitacoraService.registrarAccion("Visualizo una Especialidad" + id, usuarioActual);
+        //User usuarioActual = bitacoraService.obtenerUsuarioActual();
+        //bitacoraService.registrarAccion("Visualizo una Especialidad" + id, usuarioActual);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -42,8 +42,8 @@ public class EspecialidadController {
     public ResponseEntity<Response> getAllEspecialidades() {
         Response response = especialidadService.getAllEspecialidades();
 
-        User usuarioActual = bitacoraService.obtenerUsuarioActual();
-        bitacoraService.registrarAccion("Visualizo todas las Especialidades", usuarioActual);
+        //User usuarioActual = bitacoraService.obtenerUsuarioActual();
+        //bitacoraService.registrarAccion("Visualizo todas las Especialidades", usuarioActual);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -53,8 +53,8 @@ public class EspecialidadController {
                                                        @RequestBody EspecialidadDto especialidadDto) {
         Response response = especialidadService.updateEspecialidad(id, especialidadDto);
 
-        User usuarioActual = bitacoraService.obtenerUsuarioActual();
-        bitacoraService.registrarAccion("Actualizo una Especialidad" + id, usuarioActual);
+        //User usuarioActual = bitacoraService.obtenerUsuarioActual();
+        //bitacoraService.registrarAccion("Actualizo una Especialidad" + id, usuarioActual);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -63,8 +63,8 @@ public class EspecialidadController {
     public ResponseEntity<Response> deleteEspecialidad(@PathVariable Long id) {
         Response response = especialidadService.deleteEspecialidad(id);
 
-        User usuarioActual = bitacoraService.obtenerUsuarioActual();
-        bitacoraService.registrarAccion("Elimino una Especialidad" + id, usuarioActual);
+        //User usuarioActual = bitacoraService.obtenerUsuarioActual();
+        //bitacoraService.registrarAccion("Elimino una Especialidad" + id, usuarioActual);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
