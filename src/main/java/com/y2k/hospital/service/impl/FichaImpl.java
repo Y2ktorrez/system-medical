@@ -141,4 +141,21 @@ public class FichaImpl implements FichaService {
                 .message("Ficha eliminada exitosamente")
                 .build();
     }
+
+    @Override
+    public Response getFichasByPacienteId(Long pacienteId) {
+        Paciente paciente = pacienteRepository.findById(pacienteId)
+                .orElseThrow(() -> new NotFountException("Paciente no encontrado con ID: " + pacienteId));
+
+        List<FichaDto> fichas = fichaRepository.findByPaciente(paciente).stream()
+                .map(entityDtoMapper::mapFichaToDtoBasic)
+                .toList();
+
+        return Response.builder()
+                .status(200)
+                .message("Lista de fichas obtenida para el paciente con ID: " + pacienteId)
+                .fichaList(fichas)
+                .build();
+    }
+
 }

@@ -43,4 +43,10 @@ public class FichaController {
         Response response = fichaService.deleteFicha(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("getByCi/{id}")
+    public ResponseEntity<Response> getFichasByPacienteId(@PathVariable Long id){
+        Response response = fichaService.getFichasByPacienteId(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

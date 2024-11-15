@@ -9,4 +9,5 @@ public interface FichaService {
     Response getAllFichas();
     Response updateFicha(Long id, FichaDto fichaDto);
     Response deleteFicha(Long id);
+    Response getFichasByPacienteId(Long id);
 }
