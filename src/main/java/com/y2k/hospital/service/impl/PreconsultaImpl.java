@@ -11,9 +11,11 @@ import com.y2k.hospital.repository.EnfermeroRepository;
 import com.y2k.hospital.repository.FichaRepository;
 import com.y2k.hospital.repository.PreconsultaRepository;
 import com.y2k.hospital.service.interf.PreconsultaService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,13 +26,14 @@ public class PreconsultaImpl implements PreconsultaService {
     private final EnfermeroRepository enfermeroRepository;
     private final FichaRepository fichaRepository;
 
+    @Transactional
     @Override
     public Response createPreconsulta(PreconsultaDto preconsultaDto){
         Enfermero enfermero=enfermeroRepository.findById(preconsultaDto.getCi_enferemero())
                 .orElseThrow(()-> new NotFountException("Medico no encontrado con CI: " + preconsultaDto.getCi_enferemero()));
 
         Ficha ficha=fichaRepository.findById(preconsultaDto.getId_Ficha())
-                .orElseThrow(()-> new NotFountException("Medico no encontrado con CI: " + preconsultaDto.getCi_enferemero()));
+                .orElseThrow(()-> new NotFountException("ficha no encontrado con CI: " + preconsultaDto.getId_Ficha()));
 
         Preconsulta preconsulta=Preconsulta.builder()
                 .altura(preconsultaDto.getAltura())
@@ -44,6 +47,10 @@ public class PreconsultaImpl implements PreconsultaService {
                 .build();
 
         Preconsulta preconsultaGuardada=preconsultaRepository.save(preconsulta);
+
+        ficha.setFichaTerminada(LocalDate.now());
+
+        fichaRepository.save(ficha);
 
         PreconsultaDto response = entityDtoMapper.mapPreconsultaToDtoBasic(preconsultaGuardada);
 

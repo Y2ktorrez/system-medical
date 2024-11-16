@@ -9,9 +9,11 @@ import com.y2k.hospital.exception.NotFountException;
 import com.y2k.hospital.mapper.EntityDtoMapper;
 import com.y2k.hospital.repository.*;
 import com.y2k.hospital.service.interf.ConsultaService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class ConsultaImpl implements ConsultaService {
     private final AnalisisRepository analisisRepository;
     private final ExamenRepository examenRepository;
 
+    @Transactional
     @Override
     public Response createConsulta(ConsultaDto consultaDto) {
         Preconsulta preconsulta = preconsultaRepository.findById(consultaDto.getId_preconsulta())
@@ -80,6 +83,9 @@ public class ConsultaImpl implements ConsultaService {
         if (!listaExamenes.isEmpty()) {
             examenRepository.saveAll(listaExamenes);
         }
+
+        preconsulta.setPreconsultaTerminada(LocalDate.now());
+        preconsultaRepository.save(preconsulta);
 
         ConsultaDto response = entityDtoMapper.mapConsultaToDtoBasic(consultaGuardada,listaExamenes,listaAnalisis);
 

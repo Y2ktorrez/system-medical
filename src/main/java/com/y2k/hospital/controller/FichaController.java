@@ -49,4 +49,10 @@ public class FichaController {
         Response response = fichaService.getFichasByPacienteId(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<Response> cancelFicha(@PathVariable Long id){
+        Response response = fichaService.cancelFichaByMedico(id);
+        return  new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

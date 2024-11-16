@@ -23,6 +23,8 @@ public class Consulta {
     private LocalDate fecha;
     private String diagnostico;
 
+    private LocalDate consultaTerminada;
+
     @ManyToOne
     @JoinColumn(name = "id_preconsulta", referencedColumnName = "id")
     private Preconsulta preconsulta;

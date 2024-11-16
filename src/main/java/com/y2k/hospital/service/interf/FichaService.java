@@ -10,4 +10,5 @@ public interface FichaService {
     Response updateFicha(Long id, FichaDto fichaDto);
     Response deleteFicha(Long id);
     Response getFichasByPacienteId(Long id);
+    Response cancelFichaByMedico(Long ci_medicos);
 }

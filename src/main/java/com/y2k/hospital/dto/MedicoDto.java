@@ -22,4 +22,5 @@ public class MedicoDto {
     private String email;
     private String password;
     private List<String> especialidades;
+    private List<EspecialidadDto> listaEspecialidades;
 }

@@ -24,6 +24,9 @@ public class Ficha {
     private LocalDate fechaAtencion;
     private LocalTime horaAtencion;
 
+    private LocalDate fichaCancelada;
+    private LocalDate fichaTerminada;
+
     @ManyToOne
     @JoinColumn(name="ci_paciente",referencedColumnName = "ci")
     private Paciente paciente;

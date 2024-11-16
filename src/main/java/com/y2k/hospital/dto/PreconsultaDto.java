@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -24,4 +26,5 @@ public class PreconsultaDto {
     private FichaDto ficha;
     private Long id_Ficha;
     private String nombreEnfermero;
+    private LocalDate preconsultaTerminada;
 }

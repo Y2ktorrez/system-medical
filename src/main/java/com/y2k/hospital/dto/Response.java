@@ -62,4 +62,7 @@ public class Response {
 
     private InsumoMedicoDto insumoMedico;
     private List<InsumoMedicoDto> insumoMedicoList;
+
+    private TratamientoDto tratamiento;
+    private List<TratamientoDto> tratamientoList;
 }

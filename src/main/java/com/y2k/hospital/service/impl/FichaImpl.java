@@ -18,6 +18,7 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -155,6 +156,29 @@ public class FichaImpl implements FichaService {
                 .status(200)
                 .message("Lista de fichas obtenida para el paciente con ID: " + pacienteId)
                 .fichaList(fichas)
+                .build();
+    }
+
+    @Override
+    public Response cancelFichaByMedico(Long ci_medico){
+        List<Ficha> fichasFiltradas = fichaRepository.findAll().stream()
+                .filter(ficha -> ficha.getMedico().getCi().equals(ci_medico))
+                .toList();
+
+        // Actualizar el campo fichaCancelada para las fichas filtradas
+        fichasFiltradas.forEach(ficha -> ficha.setFichaCancelada(LocalDate.now()));
+        fichaRepository.saveAll(fichasFiltradas); // Guardar los cambios en la base de datos
+
+        // Convertir las fichas actualizadas a DTO
+        List<FichaDto> fichasDto = fichasFiltradas.stream()
+                .map(entityDtoMapper::mapFichaToDtoBasic)
+                .toList();
+
+        // Construir la respuesta
+        return Response.builder()
+                .status(200)
+                .message("Fichas canceladas con éxito")
+                .fichaList(fichasDto)
                 .build();
     }
 

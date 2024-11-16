@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 @Table(name = "preconsulta")
@@ -24,6 +26,8 @@ public class Preconsulta {
     private Integer edad;
     private String sexo;
     private String presion;
+
+    private LocalDate preconsultaTerminada;
 
     @ManyToOne
     @JoinColumn(name = "ci_enfermero", referencedColumnName = "ci")

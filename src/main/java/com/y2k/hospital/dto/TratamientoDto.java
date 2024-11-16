@@ -14,16 +14,15 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultaDto {
+public class TratamientoDto {
     private Long id;
+    private Long id_consulta;
+
+    private String descripcion;
     private LocalDate fecha;
-    private String diagnostico;
-    private Long id_preconsulta;
-    private PreconsultaDto preconsultaDto;
 
-    private LocalDate consultaTerminada;
+    private LocalDate tratamientoTerminado;
 
-    private List<ExamenDto> examen;
+    private List<InsumoTratamientoDto> insumoTratamiento;
 
-    private List<AnalisisDto> analisis;
 }

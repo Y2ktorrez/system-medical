@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeRequests(request -> request
                         .requestMatchers("/especialidad/**", "/medico/**", "/login/**", "/enfermero/**","/ficha/**","/horario/**","/horario_medico/**","/preconsulta/**","/consulta/**","/tipo_analisis/**","/tipo_examen/**","/tipo_insumo/**").permitAll()
-                        .requestMatchers("/tipo_pago/**","/insumo_medico/**").permitAll()
+                        .requestMatchers("/tipo_pago/**","/insumo_medico/**","/tratamiento/**").permitAll()
                         .requestMatchers("/paciente/**").hasAnyRole("Administrador", "Medico", "Enfermero") //Aqui van las rutas de los controladores
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

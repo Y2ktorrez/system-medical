@@ -25,4 +25,6 @@ public class FichaDto {
     private String nombrePaciente;
     private String nombreMedico;
     private String nombreEspecialidad;
+    private LocalDate fichaCancelada;
+    private LocalDate fichaTerminada;
 }

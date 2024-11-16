@@ -6,24 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultaDto {
+public class InsumoTratamientoDto {
     private Long id;
-    private LocalDate fecha;
-    private String diagnostico;
-    private Long id_preconsulta;
-    private PreconsultaDto preconsultaDto;
+    private Long id_insumoMedico;
+    private Long id_tratamiento;
 
-    private LocalDate consultaTerminada;
+    private Integer costoTotal;
+    private Integer cantidad;
 
-    private List<ExamenDto> examen;
-
-    private List<AnalisisDto> analisis;
+    private InsumoMedicoDto insumoMedico;
 }

@@ -35,6 +35,10 @@ public class EntityDtoMapper {
                 .map(Especialidad::getNombre)
                 .collect(Collectors.toList());
         medicoDto.setEspecialidades(especialidades);
+        List<EspecialidadDto> especialidadDtoList= medico.getEspecialidades().stream()
+                .map(this::mapEspecialidadToDtoBasic)
+                .toList();
+        medicoDto.setListaEspecialidades(especialidadDtoList);
 
         return medicoDto;
     }
@@ -73,6 +77,8 @@ public class EntityDtoMapper {
         fichaDto.setNombreEspecialidad(ficha.getEspecialidad().getNombre());
         fichaDto.setNombreMedico(ficha.getMedico().getUser().getNombre());
         fichaDto.setNombrePaciente(ficha.getPaciente().getUser().getNombre());
+        fichaDto.setFichaCancelada(ficha.getFichaCancelada());
+        fichaDto.setFichaTerminada(ficha.getFichaTerminada());
         return fichaDto;
     }
 
@@ -131,6 +137,7 @@ public class EntityDtoMapper {
         preconsultaDto.setFicha(mapFichaToDtoBasic(preconsulta.getFicha()));
         preconsultaDto.setCi_enferemero(preconsulta.getEnfermero().getCi());
         preconsultaDto.setId_Ficha(preconsulta.getFicha().getId());
+        preconsultaDto.setPreconsultaTerminada(preconsulta.getPreconsultaTerminada());
 
         return preconsultaDto;
     }
@@ -143,6 +150,7 @@ public class EntityDtoMapper {
         consultaDto.setDiagnostico(consulta.getDiagnostico());
         consultaDto.setId_preconsulta(consulta.getPreconsulta().getId());
         consultaDto.setPreconsultaDto(mapPreconsultaToDtoBasic(consulta.getPreconsulta()));
+        consultaDto.setConsultaTerminada(consulta.getConsultaTerminada());
 
         consultaDto.setAnalisis(mapListAnalisisToDtoBasic(analisis));
 
@@ -241,5 +249,39 @@ public class EntityDtoMapper {
                 .map(this::mapExamenToDtoBasic)
                 .toList();
     }
+
+    //Tratamiento
+    public TratamientoDto mapTratamientoToDtoBasic (Tratamiento tratamiento,List<InsumoTratamiento> insumoTratamientos){
+        TratamientoDto tratamientoDto=new TratamientoDto();
+        tratamientoDto.setId(tratamiento.getId());
+        tratamientoDto.setId_consulta(tratamiento.getConsulta().getId());
+        tratamientoDto.setDescripcion(tratamiento.getDescripcion());
+        tratamientoDto.setFecha(tratamiento.getFecha());
+        tratamientoDto.setTratamientoTerminado(tratamiento.getTratamientoTerminado());
+
+        tratamientoDto.setInsumoTratamiento(mapListInsumoTratamientoToDtoBasic(insumoTratamientos));
+        return tratamientoDto;
+    }
+
+    //InsumoTratamiento
+    public InsumoTratamientoDto mapInsumoTratamientoToDoBasic(InsumoTratamiento insumoTratamiento){
+        InsumoTratamientoDto insumoTratamientoDto= new InsumoTratamientoDto();
+        insumoTratamientoDto.setId(insumoTratamiento.getId());
+        insumoTratamientoDto.setId_tratamiento(insumoTratamiento.getTratamiento().getId());
+        insumoTratamientoDto.setId_insumoMedico(insumoTratamiento.getInsumoMedico().getId());
+        insumoTratamientoDto.setInsumoMedico(mapInsumoMedicoToDtoBasic(insumoTratamiento.getInsumoMedico()));
+        insumoTratamientoDto.setCantidad(insumoTratamiento.getCantidad());
+        insumoTratamientoDto.setCostoTotal(insumoTratamiento.getCostoTotal());
+
+        return  insumoTratamientoDto;
+    }
+
+    // Mapear una lista de InsumoTratamiento a InsumoTratamientoDto
+    public List<InsumoTratamientoDto> mapListInsumoTratamientoToDtoBasic(List<InsumoTratamiento> insumoTratamientos) {
+        return insumoTratamientos.stream()
+                .map(this::mapInsumoTratamientoToDoBasic)
+                .toList();
+    }
+
 }
 
