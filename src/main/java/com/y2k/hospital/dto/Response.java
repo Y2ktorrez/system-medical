@@ -68,4 +68,7 @@ public class Response {
 
     private HistorailDto historail;
     private List<HistorailDto> historailList;
+
+    private PagoDto pagoDto;
+    private List<PagoDto> pagoDtos;
 }

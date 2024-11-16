@@ -292,5 +292,17 @@ public class EntityDtoMapper {
         return historial;
     }
 
+    //Pago
+    public PagoDto mapPagoToDtoBasic(Pago pago) {
+        PagoDto pagoDto = new PagoDto();
+        pagoDto.setId(pago.getId());
+        pagoDto.setDescription(pago.getDescripcion());
+        pagoDto.setCostoTotal(pago.getCostoTotal());
+        pagoDto.setTipoPago(pago.getTipoPago().name());
+        pagoDto.setId_consulta(pago.getConsulta().getId());
+        pagoDto.setCancelado(pago.isCancelado());
+        return pagoDto;
+    }
+
 }
 

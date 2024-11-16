@@ -1,5 +1,6 @@
 package com.y2k.hospital.entity;
 
+import com.y2k.hospital.Enum.TipoPago;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,12 @@ public class Pago {
 
     private Integer costoTotal;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipoPago", referencedColumnName = "id")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TipoPago tipoPago;
+
+    @Column(nullable = false)
+    private boolean cancelado;
 
     @ManyToOne
     @JoinColumn(name = "id_consulta", referencedColumnName = "id")
