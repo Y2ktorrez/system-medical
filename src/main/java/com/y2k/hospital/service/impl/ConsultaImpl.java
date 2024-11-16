@@ -1,9 +1,6 @@
 package com.y2k.hospital.service.impl;
 
-import com.y2k.hospital.dto.AnalisisDto;
-import com.y2k.hospital.dto.ConsultaDto;
-import com.y2k.hospital.dto.ExamenDto;
-import com.y2k.hospital.dto.Response;
+import com.y2k.hospital.dto.*;
 import com.y2k.hospital.entity.*;
 import com.y2k.hospital.exception.NotFountException;
 import com.y2k.hospital.mapper.EntityDtoMapper;
@@ -27,6 +24,10 @@ public class ConsultaImpl implements ConsultaService {
     private final TipoAnalisisRepository tipoAnalisisRepository;
     private final AnalisisRepository analisisRepository;
     private final ExamenRepository examenRepository;
+    private final PacienteRepository pacienteRepository;
+    private final FichaRepository fichaRepository;
+    private final TratamientoRepository tratamientoRepository;
+    private final InsumoTratamientoRepository insumoTratamientoRepository;
 
     @Transactional
     @Override
@@ -169,6 +170,59 @@ public class ConsultaImpl implements ConsultaService {
         return Response.builder()
                 .status(200)
                 .message("Consulta eliminada exitosamente")
+                .build();
+    }
+
+    @Override
+    public Response historial(Long id){
+        // Paso 1: Verificar que el paciente existe
+        Paciente paciente = pacienteRepository.findById(id)
+                .orElseThrow(() -> new NotFountException("Paciente no encontrado con id: " + id));
+
+        // Paso 2: Recuperar todas las fichas del paciente
+        List<Ficha> fichas = fichaRepository.findByPaciente(paciente);
+        if (fichas.isEmpty()) {
+            throw new NotFountException("No se encontraron fichas para el paciente con id: " + id);
+        }
+
+        // Paso 3: Obtener todas las preconsultas relacionadas con las fichas
+        List<Preconsulta> preconsultas = preconsultaRepository.findByFichaIn(fichas);
+
+        // Inicializar listas para consultas y tratamientos
+        List<ConsultaDto> consultaDtos = new ArrayList<>();
+        List<TratamientoDto> tratamientoDtos = new ArrayList<>();
+
+        // Paso 4: Iterar sobre las preconsultas para obtener consultas y tratamientos
+        for (Preconsulta preconsulta : preconsultas) {
+            // Procesar las consultas asociadas a la preconsulta
+            List<Consulta> consultas = consultaRepository.findByPreconsulta(preconsulta);
+            for (Consulta consulta : consultas) {
+                // Mapear consultas a DTO incluyendo examenes y análisis
+                List<Examen> examenes = examenRepository.findAllByConsultaId(consulta.getId());
+                List<Analisis> analisis = analisisRepository.findAllByConsultaId(consulta.getId());
+                Tratamiento tratamiento = tratamientoRepository.findByConsulta(consulta);
+
+                TratamientoDto tratamientoDto = null;
+                if (tratamiento != null) {
+                    // Mapear tratamiento a DTO
+                    List<InsumoTratamiento> insumoTratamientos = insumoTratamientoRepository.findByTratamientoId(tratamiento.getId());
+                    tratamientoDto = entityDtoMapper.mapTratamientoToDtoBasic(tratamiento, insumoTratamientos);
+                }
+
+                // Paso 4.3: Mapear consulta a DTO e incluir el tratamiento
+                ConsultaDto consultaDto = entityDtoMapper.mapConsultaToDtoBasic(consulta, examenes, analisis);
+                consultaDto.setTratamientos(tratamientoDto); // Asignar el tratamiento al DTO
+                consultaDtos.add(consultaDto);
+            }
+        }
+
+        // Paso 5: Crear y retornar el objeto HistorialDto
+        HistorailDto historialDto = entityDtoMapper.mapHistorialToDoDtoBasic(id,consultaDtos);
+
+        return Response.builder()
+                .message("Historial obtenido exitosamente")
+                .status(200)
+                .historail(historialDto)
                 .build();
     }
 }

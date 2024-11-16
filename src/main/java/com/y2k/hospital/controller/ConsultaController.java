@@ -43,4 +43,10 @@ public class ConsultaController {
         Response response=consultaService.deleteConsulta(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/historial/{id}")
+    public ResponseEntity<Response> historial(@PathVariable Long id){
+        Response response=consultaService.historial(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

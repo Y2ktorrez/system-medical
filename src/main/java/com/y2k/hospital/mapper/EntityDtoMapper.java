@@ -283,5 +283,14 @@ public class EntityDtoMapper {
                 .toList();
     }
 
+    //Historial
+    public HistorailDto mapHistorialToDoDtoBasic(Long id, List<ConsultaDto> consultaDto){
+        HistorailDto historial= new HistorailDto();
+        historial.setId_paciente(id);
+        historial.setConsultas(consultaDto);
+
+        return historial;
+    }
+
 }
 

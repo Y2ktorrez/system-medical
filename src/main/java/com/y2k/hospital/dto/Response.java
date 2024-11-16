@@ -65,4 +65,7 @@ public class Response {
 
     private TratamientoDto tratamiento;
     private List<TratamientoDto> tratamientoList;
+
+    private HistorailDto historail;
+    private List<HistorailDto> historailList;
 }

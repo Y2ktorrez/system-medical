@@ -9,4 +9,5 @@ public interface ConsultaService {
     Response getAllConsultas();
     Response updateConsulta(Long id, ConsultaDto ConsultaDto);
     Response deleteConsulta(Long id);
+    Response historial(Long id);
 }

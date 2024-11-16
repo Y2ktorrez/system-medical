@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -14,18 +13,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConsultaDto {
-    private Long id;
-    private LocalDate fecha;
-    private String diagnostico;
-    private Long id_preconsulta;
-    private PreconsultaDto preconsultaDto;
+public class HistorailDto {
+    private Long id_paciente;
+    private List<ConsultaDto> consultas;
 
-    private LocalDate consultaTerminada;
-
-    private List<ExamenDto> examen;
-
-    private List<AnalisisDto> analisis;
-
-    private TratamientoDto tratamientos;
 }
