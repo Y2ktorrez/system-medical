@@ -16,6 +16,6 @@ public class PagoDto {
     private String description;
     private Integer costoTotal;
     private String tipoPago;
-    private Long id_consulta;
+    private Long idConsulta;
     private boolean cancelado;
 }

@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface InsumoTratamientoRepository extends JpaRepository<InsumoTratamiento, Long> {
     List<InsumoTratamiento> findByTratamientoId(Long tratamientoId);
-
 }

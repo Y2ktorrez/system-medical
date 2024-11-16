@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TratamientoRepository extends JpaRepository<Tratamiento, Long> {
     Tratamiento findByConsulta(Consulta consulta);
+    List<Tratamiento> findByConsultaId(Long idConsulta);
 }

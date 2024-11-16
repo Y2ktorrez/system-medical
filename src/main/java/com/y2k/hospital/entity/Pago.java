@@ -24,7 +24,6 @@ public class Pago {
     private Integer costoTotal;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private TipoPago tipoPago;
 
     @Column(nullable = false)

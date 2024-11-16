@@ -299,7 +299,7 @@ public class EntityDtoMapper {
         pagoDto.setDescription(pago.getDescripcion());
         pagoDto.setCostoTotal(pago.getCostoTotal());
         pagoDto.setTipoPago(pago.getTipoPago().name());
-        pagoDto.setId_consulta(pago.getConsulta().getId());
+        pagoDto.setIdConsulta(pago.getConsulta().getId());
         pagoDto.setCancelado(pago.isCancelado());
         return pagoDto;
     }

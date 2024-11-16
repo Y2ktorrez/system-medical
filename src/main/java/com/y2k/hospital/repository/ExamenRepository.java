@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ExamenRepository extends JpaRepository<Examen, Long> {
     List<Examen> findAllByConsultaId(Long consultaId);
+    List<Examen> findByConsultaId(Long idConsulta);
 }
